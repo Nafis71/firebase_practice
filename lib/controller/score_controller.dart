@@ -43,6 +43,7 @@ class ScoreController extends ChangeNotifier {
       }
     }
   }
+
   @override
   void dispose() {
     _cricketSubscription?.cancel();
