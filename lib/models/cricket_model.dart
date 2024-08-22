@@ -1,18 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CricketModel{
-  String? matchName;
   int? team1Score;
   int? team2Score;
+  String? team1Pic;
+  String? team2Pic;
+  String? matchId;
+  double? currentOver, totalOver;
 
-  CricketModel({required this.matchName, required this.team1Score, required this.team2Score});
 
   CricketModel.fromFireStore(QueryDocumentSnapshot documentSnapshot){
-    matchName = documentSnapshot.id;
+    matchId = documentSnapshot.id;
     team1Score = documentSnapshot['team1'];
     team2Score = documentSnapshot['team2'];
+    team1Pic = documentSnapshot['team1Pic'];
+    team2Pic = documentSnapshot['team2Pic'];
+    currentOver = double.tryParse(documentSnapshot['currentOver'].toString());
+    totalOver = double.tryParse(documentSnapshot['totalOver'].toString());
   }
 
-  String get team1Name => matchName!.split("vs").first;
-  String get team2Name => matchName!.split("vs").last;
+  String get team1Name => matchId!.split("vs").first;
+  String get team2Name => matchId!.split("vs").last;
 }

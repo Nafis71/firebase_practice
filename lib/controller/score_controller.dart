@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 
@@ -42,6 +41,28 @@ class ScoreController extends ChangeNotifier {
         debugPrint(exception.toString());
       }
     }
+  }
+
+  Future<bool> updateMatchInfo({
+    required String matchId,
+    required String team1Score,
+    required String team2Score,
+    required String currentOver,
+    required String totalOver,
+  }) async{
+    bool finalResponse = false;
+    FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+    final reference = firebaseFirestore.collection("cricket").doc(matchId);
+    Map<String,dynamic> matchData ={
+      "team1" : int.parse(team1Score),
+      "team2" : int.parse(team2Score),
+      "currentOver" : double.parse(currentOver),
+      "totalOver": double.parse(totalOver),
+    };
+    await reference.update(matchData).whenComplete((){
+      finalResponse = true;
+    });
+    return finalResponse;
   }
 
   @override
