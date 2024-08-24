@@ -33,6 +33,7 @@ class ScoreCard extends StatelessWidget {
                   width: 10,
                 ),
                 Expanded(
+                  flex: 2,
                   child: Column(
                     children: [
                       Text(
@@ -76,6 +77,7 @@ class ScoreCard extends StatelessWidget {
                   ),
                 ),
                 Expanded(
+                  flex: 2,
                   child: Column(
                     children: [
                       Text(

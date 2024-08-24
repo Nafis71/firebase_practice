@@ -1,4 +1,5 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:firebase_app/services/local_notification_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 class FirebasePushNotification {
@@ -14,35 +15,20 @@ class FirebasePushNotification {
       provisional: false,
       sound: true,
     );
-
-    AwesomeNotifications().initialize(
-        '',
-        [
-          NotificationChannel(
-            channelGroupKey: 'basic_channel_group',
-            channelKey: 'basic_channel',
-            channelName: 'Basic notifications',
-            channelDescription: 'Notification channel for basic tests',
-          )
-        ],
-        // Channel groups are only visual and are not required
-        channelGroups: [
-          NotificationChannelGroup(
-              channelGroupKey: 'basic_channel_group',
-              channelGroupName: 'Basic group')
-        ],
-        debug: true);
-
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      AwesomeNotifications().createNotification(
+    LocalNotificationService().initialize();
+    FirebaseMessaging.onMessage.listen(
+      (RemoteMessage message) {
+        AwesomeNotifications().createNotification(
           content: NotificationContent(
-        id: 10,
-        channelKey: 'basic_channel',
-        actionType: ActionType.Default,
-        title: message.notification?.title,
-        body: message.notification?.body,
-      ));
-    });
+            id: LocalNotificationService().getRandomChannelId(),
+            channelKey: 'score_channel',
+            actionType: ActionType.Default,
+            title: message.notification?.title,
+            body: message.notification?.body,
+          ),
+        );
+      },
+    );
 
     FirebaseMessaging.onBackgroundMessage(backgroundMessage);
   }
